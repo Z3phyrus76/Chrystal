@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday Chrystal!</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    min-height:100vh;
+    background: radial-gradient(ellipse at 50% 40%, #2d0a3e 0%, #1a0528 55%, #0d0118 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family: Georgia, serif;
+    padding:2rem 1rem;
+    overflow:hidden; position:relative; cursor:default;
+  }
+  canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+  #bgCanvas { z-index:0; }
+  #fxCanvas { z-index:4; }
+  .scene { width:100%; max-width:680px; position:relative; display:flex; flex-direction:column; align-items:center; z-index:2; }
+  .card {
+    background: rgba(30,5,50,0.78);
+    border-radius:32px;
+    border:1.5px solid rgba(220,120,255,0.35);
+    padding:2.8rem 3.5rem 2.2rem;
+    text-align:center; position:relative; z-index:2;
+    max-width:500px; width:100%;
+    box-shadow: 0 0 60px rgba(180,60,255,0.2), 0 0 120px rgba(180,60,255,0.1), inset 0 0 40px rgba(180,60,255,0.07);
+  }
+  .title-wrap { position:relative; display:inline-block; overflow:hidden; }
+  .title {
+    font-size:clamp(1.9rem,5vw,3rem); font-weight:bold; line-height:1.18;
+    background: linear-gradient(135deg, #ffd6f0 0%, #ff80d5 35%, #c97dff 65%, #ffd6f0 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    filter: drop-shadow(0 0 18px rgba(220,100,255,0.55));
+    position:relative;
+  }
+  .shimmer-bar {
+    position:absolute; top:0; left:-100%; width:60%; height:100%;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
+    animation: shimmerSweep 3.2s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes shimmerSweep { 0%{left:-80%} 60%{left:130%} 100%{left:130%} }
+  .subtitle {
+    font-size:clamp(0.9rem,2.4vw,1.05rem); color:#e8b4f8; font-style:italic;
+    margin-top:0.85rem; line-height:1.55;
+    text-shadow:0 0 12px rgba(200,100,255,0.4); min-height:2.5em;
+  }
+  .cursor { display:inline-block; width:2px; height:1em; background:#e8b4f8; margin-left:2px; vertical-align:middle; animation:blink 0.75s step-end infinite; }
+  @keyframes blink { 50%{opacity:0} }
+  .wish-btn {
+    margin-top:1.6rem;
+    padding:0.65rem 2rem;
+    border-radius:999px;
+    border:1.5px solid rgba(220,120,255,0.6);
+    background:rgba(180,60,255,0.15);
+    color:#f0c0ff;
+    font-family:Georgia,serif; font-size:1rem; font-style:italic;
+    cursor:pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    box-shadow:0 0 18px rgba(180,60,255,0.2);
+  }
+  .wish-btn:hover { background:rgba(180,60,255,0.32); box-shadow:0 0 32px rgba(220,100,255,0.45); transform:scale(1.04); }
+  .wish-btn:active { transform:scale(0.97); }
+  .wish-msg {
+    margin-top:1rem; font-size:1rem; color:#ffd6f0; font-style:italic;
+    min-height:1.5em; text-shadow:0 0 16px rgba(255,180,255,0.7);
+    opacity:0; transition:opacity 0.5s;
+  }
+  .wish-msg.show { opacity:1; }
+  .flower-row { display:flex; justify-content:center; margin-bottom:-12px; }
+  .flower-row.bottom { margin-top:-12px; margin-bottom:0; }
+  .fl { transition: filter 0.25s, transform 0.25s; cursor:default; }
+  .fl:hover { filter: drop-shadow(0 0 14px rgba(255,160,255,0.9)) drop-shadow(0 0 28px rgba(200,80,255,0.6)); transform:scale(1.13) translateY(-4px); }
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<canvas id="fxCanvas"></canvas>
+
+<div class="scene">
+  <div class="flower-row">
+    <svg width="560" height="150" viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ctr" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#fff9c4"/><stop offset="55%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#78350f"/></radialGradient>
+        <radialGradient id="p1a" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fce7f3"/><stop offset="60%" stop-color="#f472b6"/><stop offset="100%" stop-color="#9d174d"/></radialGradient>
+        <radialGradient id="p2a" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fdf4ff"/><stop offset="60%" stop-color="#c084fc"/><stop offset="100%" stop-color="#581c87"/></radialGradient>
+        <radialGradient id="p3a" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="60%" stop-color="#fb7185"/><stop offset="100%" stop-color="#881337"/></radialGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="sg"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g class="fl" transform="translate(58,88)" filter="url(#sg)">
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.95"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.88" transform="rotate(45)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.9" transform="rotate(90)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(135)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.95" transform="rotate(180)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.88" transform="rotate(225)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.9" transform="rotate(270)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(315)"/>
+        <circle cx="0" cy="0" r="16" fill="url(#ctr)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.6)"/>
+      </g>
+      <g class="fl" transform="translate(148,78)" filter="url(#sg)">
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p3a)" opacity="0.95"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p1a)" opacity="0.88" transform="rotate(60)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p3a)" opacity="0.9" transform="rotate(120)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p1a)" opacity="0.88" transform="rotate(180)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p3a)" opacity="0.9" transform="rotate(240)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p1a)" opacity="0.88" transform="rotate(300)"/>
+        <circle cx="0" cy="0" r="18" fill="url(#ctr)"/><circle cx="-5" cy="-5" r="7" fill="rgba(255,253,220,0.55)"/>
+      </g>
+      <g class="fl" transform="translate(248,70)" filter="url(#glow)">
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p2a)" opacity="0.95"/>
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p1a)" opacity="0.85" transform="rotate(45)"/>
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p2a)" opacity="0.92" transform="rotate(90)"/>
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p1a)" opacity="0.85" transform="rotate(135)"/>
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p2a)" opacity="0.95" transform="rotate(180)"/>
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p1a)" opacity="0.85" transform="rotate(225)"/>
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p2a)" opacity="0.92" transform="rotate(270)"/>
+        <path d="M0,-64 C9,-84 32,-90 26,-62 C20,-36 6,-24 0,-12 C-6,-24 -20,-36 -26,-62 C-32,-90 -9,-84 0,-64Z" fill="url(#p1a)" opacity="0.85" transform="rotate(315)"/>
+        <circle cx="0" cy="0" r="20" fill="url(#ctr)"/><circle cx="-5" cy="-5" r="8" fill="rgba(255,253,220,0.6)"/>
+      </g>
+      <g class="fl" transform="translate(362,78)" filter="url(#sg)">
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p3a)" opacity="0.95"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p2a)" opacity="0.88" transform="rotate(60)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p3a)" opacity="0.9" transform="rotate(120)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p2a)" opacity="0.88" transform="rotate(180)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p3a)" opacity="0.9" transform="rotate(240)"/>
+        <path d="M0,-56 C7,-74 28,-80 23,-56 C18,-34 5,-22 0,-11 C-5,-22 -18,-34 -23,-56 C-28,-80 -7,-74 0,-56Z" fill="url(#p2a)" opacity="0.88" transform="rotate(300)"/>
+        <circle cx="0" cy="0" r="18" fill="url(#ctr)"/><circle cx="-5" cy="-5" r="7" fill="rgba(255,253,220,0.55)"/>
+      </g>
+      <g class="fl" transform="translate(458,88)" filter="url(#sg)">
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.95"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(45)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.9" transform="rotate(90)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(135)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.95" transform="rotate(180)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(225)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.9" transform="rotate(270)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(315)"/>
+        <circle cx="0" cy="0" r="16" fill="url(#ctr)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.6)"/>
+      </g>
+      <path d="M58,88 Q75,118 98,132 Q122,138 148,120" fill="none" stroke="#2d6e45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M148,78 Q185,105 215,110" fill="none" stroke="#2d6e45" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M248,70 Q248,108 248,138" fill="none" stroke="#2d6e45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M362,78 Q330,108 302,115" fill="none" stroke="#2d6e45" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M458,88 Q432,118 408,132 Q384,138 362,120" fill="none" stroke="#2d6e45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M95,115 C102,105 116,107 113,116" fill="#2d6e45" opacity="0.9"/>
+      <path d="M175,102 C182,92 196,94 192,103" fill="#2d6e45" opacity="0.85"/>
+      <path d="M248,118 C240,108 226,110 230,119" fill="#2d6e45" opacity="0.9"/>
+      <path d="M318,108 C310,98 296,100 300,109" fill="#2d6e45" opacity="0.85"/>
+      <path d="M415,118 C410,108 396,110 400,119" fill="#2d6e45" opacity="0.9"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <div class="title-wrap">
+      <div class="title">Happy Birthday<br>Chrystal!</div>
+      <div class="shimmer-bar"></div>
+    </div>
+    <div class="subtitle" id="subtitleEl"><span class="cursor"></span></div>
+    <button class="wish-btn" id="wishBtn">✨ Make a Wish</button>
+    <div class="wish-msg" id="wishMsg">Your wish is on its way to the stars...</div>
+  </div>
+
+  <div class="flower-row bottom">
+    <svg width="520" height="138" viewBox="0 0 520 138" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ctr2" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#fff9c4"/><stop offset="55%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#78350f"/></radialGradient>
+        <radialGradient id="q1" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fdf4ff"/><stop offset="60%" stop-color="#c084fc"/><stop offset="100%" stop-color="#581c87"/></radialGradient>
+        <radialGradient id="q2" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="60%" stop-color="#fb7185"/><stop offset="100%" stop-color="#881337"/></radialGradient>
+        <radialGradient id="q3" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fefce8"/><stop offset="50%" stop-color="#fde047"/><stop offset="100%" stop-color="#713f12"/></radialGradient>
+        <radialGradient id="q4" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fce7f3"/><stop offset="60%" stop-color="#f472b6"/><stop offset="100%" stop-color="#9d174d"/></radialGradient>
+      </defs>
+      <path d="M50,55 Q50,30 50,8" fill="none" stroke="#2d6e45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M140,50 Q122,28 112,10" fill="none" stroke="#2d6e45" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M224,55 Q224,30 224,8" fill="none" stroke="#2d6e45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M306,50 Q322,28 334,10" fill="none" stroke="#2d6e45" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M400,55 Q400,30 400,8" fill="none" stroke="#2d6e45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M476,50 Q458,28 448,10" fill="none" stroke="#2d6e45" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M38,50 C28,40 14,42 18,52" fill="#2d6e45" opacity="0.9"/><path d="M62,50 C72,40 86,42 82,52" fill="#2d6e45" opacity="0.9"/>
+      <path d="M132,44 C122,34 108,36 112,46" fill="#2d6e45" opacity="0.85"/>
+      <path d="M214,50 C204,40 190,42 194,52" fill="#2d6e45" opacity="0.9"/><path d="M234,50 C244,40 258,42 254,52" fill="#2d6e45" opacity="0.9"/>
+      <path d="M314,44 C324,34 338,36 334,46" fill="#2d6e45" opacity="0.85"/>
+      <path d="M388,50 C378,40 364,42 368,52" fill="#2d6e45" opacity="0.9"/><path d="M412,50 C422,40 436,42 432,52" fill="#2d6e45" opacity="0.9"/>
+      <path d="M466,44 C456,34 442,36 446,46" fill="#2d6e45" opacity="0.85"/>
+      <g class="fl" transform="translate(50,55)" filter="url(#sg)">
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q3)" opacity="0.95"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(45)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q3)" opacity="0.92" transform="rotate(90)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(135)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q3)" opacity="0.95" transform="rotate(180)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(225)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q3)" opacity="0.92" transform="rotate(270)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(315)"/>
+        <circle cx="0" cy="0" r="15" fill="url(#ctr2)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.55)"/>
+      </g>
+      <g class="fl" transform="translate(140,50)" filter="url(#sg)">
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.95"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q1)" opacity="0.88" transform="rotate(72)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.92" transform="rotate(144)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q1)" opacity="0.88" transform="rotate(216)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.92" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="16" fill="url(#ctr2)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.55)"/>
+      </g>
+      <g class="fl" transform="translate(224,55)" filter="url(#glow)">
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q1)" opacity="0.95"/>
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q2)" opacity="0.85" transform="rotate(45)"/>
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q1)" opacity="0.92" transform="rotate(90)"/>
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q2)" opacity="0.85" transform="rotate(135)"/>
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q1)" opacity="0.95" transform="rotate(180)"/>
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q2)" opacity="0.85" transform="rotate(225)"/>
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q1)" opacity="0.92" transform="rotate(270)"/>
+        <path d="M0,-58 C8,-76 30,-82 24,-58 C18,-36 6,-24 0,-12 C-6,-24 -18,-36 -24,-58 C-30,-82 -8,-76 0,-58Z" fill="url(#q2)" opacity="0.85" transform="rotate(315)"/>
+        <circle cx="0" cy="0" r="19" fill="url(#ctr2)"/><circle cx="-5" cy="-5" r="8" fill="rgba(255,253,220,0.6)"/>
+      </g>
+      <g class="fl" transform="translate(306,50)" filter="url(#sg)">
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q2)" opacity="0.95"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.88" transform="rotate(72)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q2)" opacity="0.92" transform="rotate(144)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.88" transform="rotate(216)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q2)" opacity="0.92" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="16" fill="url(#ctr2)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.55)"/>
+      </g>
+      <g class="fl" transform="translate(400,55)" filter="url(#sg)">
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q1)" opacity="0.95"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(45)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q1)" opacity="0.92" transform="rotate(90)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(135)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q1)" opacity="0.95" transform="rotate(180)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(225)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q1)" opacity="0.92" transform="rotate(270)"/>
+        <path d="M0,-46 C6,-60 22,-64 18,-46 C14,-28 4,-18 0,-9 C-4,-18 -14,-28 -18,-46 C-22,-64 -6,-60 0,-46Z" fill="url(#q4)" opacity="0.85" transform="rotate(315)"/>
+        <circle cx="0" cy="0" r="15" fill="url(#ctr2)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.55)"/>
+      </g>
+      <g class="fl" transform="translate(476,50)" filter="url(#sg)">
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.95"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q2)" opacity="0.88" transform="rotate(72)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.92" transform="rotate(144)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q2)" opacity="0.88" transform="rotate(216)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.92" transform="rotate(288)"/>
+        <circle cx="0" cy="0" r="16" fill="url(#ctr2)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.55)"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<script>
+const bgC = document.getElementById('bgCanvas');
+const bgX = bgC.getContext('2d');
+const fxC = document.getElementById('fxCanvas');
+const fx = fxC.getContext('2d');
+
+function resize() {
+  bgC.width = fxC.width = window.innerWidth;
+  bgC.height = fxC.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const stars = Array.from({length:130}, () => ({
+  x: Math.random(), y: Math.random(),
+  r: 0.5 + Math.random() * 1.6,
+  phase: Math.random() * Math.PI * 2,
+  speed: 0.005 + Math.random() * 0.012
+}));
+
+function drawBg(t) {
+  bgX.clearRect(0, 0, bgC.width, bgC.height);
+  for (const s of stars) {
+    const a = 0.25 + 0.55 * Math.abs(Math.sin(s.phase + t * s.speed));
+    bgX.beginPath();
+    bgX.arc(s.x * bgC.width, s.y * bgC.height, s.r, 0, Math.PI * 2);
+    bgX.fillStyle = `rgba(255,210,255,${a})`;
+    bgX.fill();
+  }
+}
+
+const particles = [];
+const confettiColors = ['#f472b6','#c084fc','#fb7185','#fbbf24','#34d399','#60a5fa','#f9a8d4','#a78bfa','#fde047'];
+
+function spawnConfetti(cx, cy, count, isClick) {
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = isClick ? (1.5 + Math.random() * 4) : (3 + Math.random() * 7);
+    const col = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    const type = Math.random() > 0.4 ? 'rect' : 'circle';
+    particles.push({
+      x: cx, y: cy, vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - (isClick ? 1 : 3),
+      rot: Math.random() * Math.PI * 2, rotV: (Math.random() - 0.5) * 0.2,
+      w: 4 + Math.random() * 7, h: 3 + Math.random() * 5,
+      color: col, life: 1, decay: 0.012 + Math.random() * 0.018, gravity: 0.08, type,
+    });
+  }
+}
+
+function spawnPetalBurst(cx, cy) {
+  const petalCols = ['#f9a8d4','#c084fc','#fb7185','#f472b6','#e879f9'];
+  for (let i = 0; i < 18; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 2 + Math.random() * 5;
+    particles.push({
+      x: cx, y: cy, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 2,
+      rot: Math.random() * Math.PI * 2, rotV: (Math.random() - 0.5) * 0.12,
+      w: 6 + Math.random() * 9, h: 4 + Math.random() * 6,
+      color: petalCols[Math.floor(Math.random() * petalCols.length)],
+      life: 1, decay: 0.014 + Math.random() * 0.016, gravity: 0.06, type: 'petal',
+    });
+  }
+}
+
+const fireworks = [];
+function spawnFirework() {
+  const x = 0.15 + Math.random() * 0.7;
+  const y = 0.1 + Math.random() * 0.4;
+  const col = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+  const count = 28 + Math.floor(Math.random() * 18);
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2;
+    const speed = 2.5 + Math.random() * 3.5;
+    fireworks.push({
+      x: x * fxC.width, y: y * fxC.height,
+      vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+      color: col, life: 1, decay: 0.018 + Math.random() * 0.012,
+      gravity: 0.04, tail: [],
+    });
+  }
+}
+
+let fwTimer = 0;
+
+function drawFX() {
+  fx.clearRect(0, 0, fxC.width, fxC.height);
+  fwTimer++;
+  if (fwTimer % 110 === 0) spawnFirework();
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    const fw = fireworks[i];
+    fw.tail.push({x: fw.x, y: fw.y, life: fw.life});
+    if (fw.tail.length > 6) fw.tail.shift();
+    fw.x += fw.vx; fw.y += fw.vy; fw.vy += fw.gravity;
+    fw.vx *= 0.97; fw.vy *= 0.97; fw.life -= fw.decay;
+    if (fw.life <= 0) { fireworks.splice(i, 1); continue; }
+    for (let j = 0; j < fw.tail.length; j++) {
+      const tp = fw.tail[j];
+      fx.beginPath(); fx.arc(tp.x, tp.y, 1.5 * (j / fw.tail.length), 0, Math.PI * 2);
+      fx.fillStyle = fw.color; fx.globalAlpha = tp.life * (j / fw.tail.length) * 0.5; fx.fill();
+    }
+    fx.beginPath(); fx.arc(fw.x, fw.y, 2.2, 0, Math.PI * 2);
+    fx.fillStyle = fw.color; fx.globalAlpha = fw.life;
+    fx.shadowColor = fw.color; fx.shadowBlur = 8; fx.fill();
+    fx.shadowBlur = 0; fx.globalAlpha = 1;
+  }
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.vx *= 0.98;
+    p.rot += p.rotV; p.life -= p.decay;
+    if (p.life <= 0) { particles.splice(i, 1); continue; }
+    fx.save(); fx.globalAlpha = p.life; fx.translate(p.x, p.y); fx.rotate(p.rot); fx.fillStyle = p.color;
+    if (p.type === 'circle') {
+      fx.beginPath(); fx.arc(0, 0, p.w / 2, 0, Math.PI * 2); fx.fill();
+    } else if (p.type === 'petal') {
+      fx.beginPath(); fx.moveTo(0, -p.w);
+      fx.bezierCurveTo(p.h*0.7,-p.w*0.7,p.h*0.7,p.w*0.3,0,p.w*0.5);
+      fx.bezierCurveTo(-p.h*0.7,p.w*0.3,-p.h*0.7,-p.w*0.7,0,-p.w); fx.fill();
+    } else { fx.fillRect(-p.w/2,-p.h/2,p.w,p.h); }
+    fx.restore();
+  }
+}
+
+let t = 0;
+function loop() { t += 0.01; drawBg(t); drawFX(); requestAnimationFrame(loop); }
+loop();
+
+setTimeout(() => {
+  const cx = window.innerWidth/2, cy = window.innerHeight/2;
+  spawnConfetti(cx, cy-80, 90, false);
+  spawnFirework(); spawnFirework();
+}, 400);
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.wish-btn')) return;
+  if (Math.random() > 0.5) spawnPetalBurst(e.clientX, e.clientY);
+  else spawnConfetti(e.clientX, e.clientY, 22, true);
+});
+
+const wishBtn = document.getElementById('wishBtn');
+const wishMsg = document.getElementById('wishMsg');
+const wishMessages = [
+  'Your wish is on its way to the stars...','The universe heard you, Chrystal!',
+  'May all your dreams bloom like flowers...','Wishing you infinite joy and love!'
+];
+let wishIdx = 0;
+wishBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  wishMsg.textContent = wishMessages[wishIdx % wishMessages.length]; wishIdx++;
+  wishMsg.classList.add('show');
+  for (let i = 0; i < 5; i++) setTimeout(() => spawnFirework(), i * 120);
+  const r = wishBtn.getBoundingClientRect();
+  spawnConfetti(r.left + r.width/2, r.top, 50, true);
+  spawnPetalBurst(r.left + r.width/2, r.top);
+  setTimeout(() => wishMsg.classList.remove('show'), 3500);
+});
+
+const subtitle = document.getElementById('subtitleEl');
+const fullText = 'You deserve to have your wishes come true!';
+let charIdx = 0;
+const cursor = subtitle.querySelector('.cursor');
+function typeChar() {
+  if (charIdx < fullText.length) {
+    const span = document.createElement('span');
+    span.textContent = fullText[charIdx];
+    subtitle.insertBefore(span, cursor);
+    charIdx++;
+    setTimeout(typeChar, 48 + Math.random() * 38);
+  }
+}
+setTimeout(typeChar, 900);
+</script>
+</body>
+</html>
