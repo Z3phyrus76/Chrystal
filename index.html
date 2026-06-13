@@ -278,6 +278,63 @@ function drawBg(t) {
   }
 }
 
+const fallPetalColors = [
+  ['#f472b6','#fce7f3'],['#c084fc','#f3e8ff'],['#fb7185','#ffe4e6'],
+  ['#e879f9','#fdf4ff'],['#f9a8d4','#fdf2f8'],['#a78bfa','#ede9fe'],
+];
+function makeFallPetal(initial) {
+  const col = fallPetalColors[Math.floor(Math.random() * fallPetalColors.length)];
+  return {
+    x: Math.random() * window.innerWidth,
+    y: initial ? Math.random() * window.innerHeight : -20 - Math.random() * 80,
+    size: 5 + Math.random() * 9,
+    speedY: 0.5 + Math.random() * 1.1,
+    speedX: -0.5 + Math.random() * 1.0,
+    rot: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.05,
+    sway: Math.random() * Math.PI * 2,
+    swaySpeed: 0.01 + Math.random() * 0.02,
+    swayAmt: 0.7 + Math.random() * 1.4,
+    opacity: 0.5 + Math.random() * 0.4,
+    color: col[0], colorLight: col[1],
+  };
+}
+const fallPetals = Array.from({length: 55}, () => makeFallPetal(true));
+
+function drawFallPetal(p) {
+  bgX.save();
+  bgX.translate(p.x, p.y);
+  bgX.rotate(p.rot);
+  bgX.globalAlpha = p.opacity;
+  bgX.beginPath();
+  bgX.moveTo(0, -p.size);
+  bgX.bezierCurveTo(p.size*0.65,-p.size*0.75,p.size*0.75,p.size*0.35,0,p.size*0.55);
+  bgX.bezierCurveTo(-p.size*0.75,p.size*0.35,-p.size*0.65,-p.size*0.75,0,-p.size);
+  bgX.fillStyle = p.color;
+  bgX.fill();
+  bgX.beginPath();
+  bgX.moveTo(0, -p.size*0.75);
+  bgX.bezierCurveTo(p.size*0.32,-p.size*0.45,p.size*0.28,p.size*0.15,0,p.size*0.32);
+  bgX.bezierCurveTo(-p.size*0.28,p.size*0.15,-p.size*0.32,-p.size*0.45,0,-p.size*0.75);
+  bgX.fillStyle = p.colorLight;
+  bgX.globalAlpha = p.opacity * 0.5;
+  bgX.fill();
+  bgX.restore();
+}
+
+function drawFallPetals() {
+  for (const p of fallPetals) {
+    p.sway += p.swaySpeed;
+    p.x += p.speedX + Math.sin(p.sway) * p.swayAmt;
+    p.y += p.speedY;
+    p.rot += p.rotSpeed;
+    drawFallPetal(p);
+    if (p.y > bgC.height + 30 || p.x < -60 || p.x > bgC.width + 60) {
+      Object.assign(p, makeFallPetal(false));
+    }
+  }
+}
+
 const particles = [];
 const confettiColors = ['#f472b6','#c084fc','#fb7185','#fbbf24','#34d399','#60a5fa','#f9a8d4','#a78bfa','#fde047'];
 
@@ -371,7 +428,7 @@ function drawFX() {
 }
 
 let t = 0;
-function loop() { t += 0.01; drawBg(t); drawFX(); requestAnimationFrame(loop); }
+function loop() { t += 0.01; drawBg(t); drawFallPetals(); drawFX(); requestAnimationFrame(loop); }
 loop();
 
 setTimeout(() => {
