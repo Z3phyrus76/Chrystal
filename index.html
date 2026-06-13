@@ -407,14 +407,19 @@ wishBtn.addEventListener('click', (e) => {
 });
 
 const subtitle = document.getElementById('subtitleEl');
-const fullText = 'Make a wish...';
+const fullText = 'You deserve to have your wishes come true!\nMake a wish!';
 let charIdx = 0;
 const cursor = subtitle.querySelector('.cursor');
 function typeChar() {
   if (charIdx < fullText.length) {
-    const span = document.createElement('span');
-    span.textContent = fullText[charIdx];
-    subtitle.insertBefore(span, cursor);
+    const ch = fullText[charIdx];
+    if (ch === '\n') {
+      subtitle.insertBefore(document.createElement('br'), cursor);
+    } else {
+      const span = document.createElement('span');
+      span.textContent = ch;
+      subtitle.insertBefore(span, cursor);
+    }
     charIdx++;
     setTimeout(typeChar, 48 + Math.random() * 38);
   }
