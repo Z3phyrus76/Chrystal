@@ -30,7 +30,7 @@
   .title-wrap { position:relative; display:inline-block; overflow:hidden; }
   .title {
     font-size:clamp(1.9rem,5vw,3rem); font-weight:bold; line-height:1.18;
-    background: linear-gradient(135deg, #e0608f 0%, #d14f7a 35%, #9b6fc0 65%, #e0608f 100%);
+    background: linear-gradient(135deg, #e0608f 0%, #d14f7a 30%, #9b6fc0 55%, #b06fd0 75%, #e0608f 100%);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
     filter: drop-shadow(0 0 10px rgba(224,96,143,0.35));
     position:relative;
@@ -89,18 +89,19 @@
         <radialGradient id="p2a" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fff0f4"/><stop offset="60%" stop-color="#f7a8c4"/><stop offset="100%" stop-color="#d56a96"/></radialGradient>
         <radialGradient id="p3a" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fff1ee"/><stop offset="60%" stop-color="#f89a8e"/><stop offset="100%" stop-color="#c45a4e"/></radialGradient>
         <radialGradient id="pblue" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#eef5ff"/><stop offset="60%" stop-color="#9cc5f7"/><stop offset="100%" stop-color="#5a8ad0"/></radialGradient>
+        <radialGradient id="plav" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#f5edfb"/><stop offset="60%" stop-color="#c6a8e0"/><stop offset="100%" stop-color="#8a6bb0"/></radialGradient>
         <filter id="glow"><feGaussianBlur stdDeviation="3.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <filter id="sg"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
       <g class="fl" transform="translate(58,88)" filter="url(#sg)">
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.95"/>
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.88" transform="rotate(45)"/>
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.9" transform="rotate(90)"/>
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(135)"/>
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.95" transform="rotate(180)"/>
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p1a)" opacity="0.88" transform="rotate(225)"/>
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.9" transform="rotate(270)"/>
-        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#p2a)" opacity="0.88" transform="rotate(315)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.95"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.88" transform="rotate(45)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.9" transform="rotate(90)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.88" transform="rotate(135)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.95" transform="rotate(180)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.88" transform="rotate(225)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.9" transform="rotate(270)"/>
+        <path d="M0,-48 C8,-62 24,-65 19,-46 C14,-28 4,-18 0,-8 C-4,-18 -14,-28 -19,-46 C-24,-65 -8,-62 0,-48Z" fill="url(#plav)" opacity="0.88" transform="rotate(315)"/>
         <circle cx="0" cy="0" r="16" fill="url(#ctr)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.6)"/>
       </g>
       <g class="fl" transform="translate(148,78)" filter="url(#sg)">
@@ -175,6 +176,7 @@
         <radialGradient id="q3" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fbe4ee"/><stop offset="55%" stop-color="#c66b96"/><stop offset="100%" stop-color="#8a3a63"/></radialGradient>
         <radialGradient id="q4" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#fff0f4"/><stop offset="60%" stop-color="#fbc4d0"/><stop offset="100%" stop-color="#d88c8c"/></radialGradient>
         <radialGradient id="qblue" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#eef5ff"/><stop offset="60%" stop-color="#9cc5f7"/><stop offset="100%" stop-color="#5a8ad0"/></radialGradient>
+        <radialGradient id="qlav" cx="50%" cy="20%" r="70%"><stop offset="0%" stop-color="#f5edfb"/><stop offset="60%" stop-color="#c6a8e0"/><stop offset="100%" stop-color="#8a6bb0"/></radialGradient>
       </defs>
       <path d="M50,55 Q50,30 50,8" fill="none" stroke="#2d6e45" stroke-width="3" stroke-linecap="round"/>
       <path d="M140,50 Q122,28 112,10" fill="none" stroke="#2d6e45" stroke-width="2.5" stroke-linecap="round"/>
@@ -238,11 +240,11 @@
         <circle cx="0" cy="0" r="15" fill="url(#ctr2)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.55)"/>
       </g>
       <g class="fl" transform="translate(476,50)" filter="url(#sg)">
-        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.95"/>
-        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q2)" opacity="0.88" transform="rotate(72)"/>
-        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.92" transform="rotate(144)"/>
-        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q2)" opacity="0.88" transform="rotate(216)"/>
-        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#q4)" opacity="0.92" transform="rotate(288)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#qlav)" opacity="0.95"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#qlav)" opacity="0.88" transform="rotate(72)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#qlav)" opacity="0.92" transform="rotate(144)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#qlav)" opacity="0.88" transform="rotate(216)"/>
+        <path d="M0,-52 C7,-68 26,-74 21,-52 C16,-32 5,-20 0,-10 C-5,-20 -16,-32 -21,-52 C-26,-74 -7,-68 0,-52Z" fill="url(#qlav)" opacity="0.92" transform="rotate(288)"/>
         <circle cx="0" cy="0" r="16" fill="url(#ctr2)"/><circle cx="-4" cy="-4" r="6" fill="rgba(255,253,220,0.55)"/>
       </g>
     </svg>
@@ -282,8 +284,8 @@ function drawBg(t) {
 
 const fallPetalColors = [
   ['#fbc4d0','#fff0f4'],['#f7a8c4','#fff0f6'],['#f89a8e','#fff1ee'],
-  ['#9cc5f7','#eef5ff'],['#d88c8c','#ffeceb'],['#7eb6f5','#e6f0ff'],
-  ['#b3d4f9','#f0f7ff'],['#fbc4d0','#fff0f4'],
+  ['#9cc5f7','#eef5ff'],['#c6a8e0','#f5edfb'],['#7eb6f5','#e6f0ff'],
+  ['#d8b8ec','#f7f0fb'],['#fbc4d0','#fff0f4'],
 ];
 function makeFallPetal(initial) {
   const col = fallPetalColors[Math.floor(Math.random() * fallPetalColors.length)];
@@ -339,7 +341,7 @@ function drawFallPetals() {
 }
 
 const particles = [];
-const confettiColors = ['#fbc4d0','#f7a8c4','#f89a8e','#9cc5f7','#d88c8c','#7eb6f5','#9cc5f7','#fbc4d0','#b3d4f9'];
+const confettiColors = ['#fbc4d0','#f7a8c4','#f89a8e','#9cc5f7','#d88c8c','#c6a8e0','#7eb6f5','#fbc4d0','#d8b8ec'];
 
 function spawnConfetti(cx, cy, count, isClick) {
   for (let i = 0; i < count; i++) {
@@ -358,7 +360,7 @@ function spawnConfetti(cx, cy, count, isClick) {
 }
 
 function spawnPetalBurst(cx, cy) {
-  const petalCols = ['#fbc4d0','#9cc5f7','#f89a8e','#7eb6f5','#d88c8c'];
+  const petalCols = ['#fbc4d0','#9cc5f7','#f89a8e','#c6a8e0','#d88c8c'];
   for (let i = 0; i < 18; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = 2 + Math.random() * 5;
